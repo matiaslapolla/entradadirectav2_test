@@ -1,0 +1,4 @@
+RewriteEngine on
+Rewriterule ^login ?sec=login.php
+Rewriterule ^logout ?logout=1
+

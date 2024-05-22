@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <title>Ventas</title>
+
+</head>
+<body>
+    <h1>Listado de ventas</h1>
+    <table id="miTabla" class="display" style="width: 100%">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Obra teatral</th>
+                <th>Sector</th>
+                <th>Fecha y hora</th>
+                <th>Cantidad de ventas</th>
+                <th>Total del sector</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Fecha</th>
+                <th>Obra teatral</th>
+                <th>Sector</th>
+                <th>Fecha y hora</th>
+                <th>Cantidad de ventas</th>
+                <th>Total del sector</th>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script type="application/javascript">
+    $(document).ready(function () {
+        $('#miTabla').DataTable({
+            ajax: { "url": "/dataServices/get_ventas.php",
+            	  "dataSrc": ""
+				},
+            columns :[
+            	  	{data:"Fecha"},
+            	  	{data:"ObraTeatral"},
+            	  	{data:"Sector"},
+            	  	{data:"FechaHora"},
+            	  	{data:"Cantidad"},
+            	  	{data:"TotalSector"}
+            	]
+            });            		
+        });
+
+</script>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <title>Ejemplo de DataTables</title>
+
+</head>
+<body>
+    <h1>Roles en el sistema</h1>
+    <table id="miTabla" class="display" style="width: 100%">
+        <thead>
+            <tr>
+                <th>IDRol</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>IDRol</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script type="application/javascript">
+    $(document).ready(function () {
+        $('#miTabla').DataTable({
+            ajax: { "url": "/dataServices/get_roles.php",
+            	  "dataSrc": ""
+				},
+            columns :[
+            	  	{data:"IDRol"},
+            	  	{data:"Nombre"},
+            	  	{data:"Descripcion"}
+            	]
+            });            		
+        });
+
+</script>

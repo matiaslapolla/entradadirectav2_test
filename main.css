@@ -1,0 +1,43 @@
+*{
+  margin:0;
+  padding:0;
+ }
+
+ body {
+  margin:0;
+  padding:0;
+  font-family: Roboto, arial;
+  height: 100%;
+  font-size:16px;
+  font-weight: 300;
+  color:#000;
+  letter-spacing: 0.01em; 
+  }
+
+  
+
+@media (min-width: 1214px) and (max-width: 4048px) {
+  #divVideo1{
+  width:860px;
+  height:400px;
+  }
+  .divFicha{
+  float:left;
+  margin-left:30px;
+  width:360px;
+  }
+}
+
+
+
+@media screen and (max-width: 1213px) {
+  #divVideo1{
+  width:99%;
+  height:316px;
+  }
+  .divFicha{
+  float:none;
+  margin:auto;
+  width:322px;
+  }
+}
