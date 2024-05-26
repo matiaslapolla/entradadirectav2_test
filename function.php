@@ -39,8 +39,8 @@ function conexion(){
 
 }else{
 
-	echo "if en raiz define conexion()" . PHP_EOL;
-
+	// echo "if en raiz define conexion()" . PHP_EOL;
+	
   // function conexion(){
   //   $servidor = "localhost";
   // 	$usuario = "mglopez";
