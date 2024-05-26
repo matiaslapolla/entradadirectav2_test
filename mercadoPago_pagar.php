@@ -53,6 +53,9 @@ function createPreferenceRequest($items, $payer)
 
 function createPaymentPreference()
 {
+	//guide 
+	
+	https://www.youtube.com/watch?v=-VD-l5BQsuE&t=1112s
     // Fill the data about the product(s) being pruchased
     $product1 = array(
         "id" => "1234567890",
