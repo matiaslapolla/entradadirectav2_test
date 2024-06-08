@@ -10,6 +10,19 @@ use MercadoPago\Exceptions\MPApiException;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+$IDEvento = $_POST['IDEvento'];
+$dni = $_POST['dni'];
+$sector = $_POST['sector'];
+$cantidad = $_POST['cantidad'];
+$usuario = $_POST['usuario'];
+$obra = $_POST['obra'];
+$fecha = $_POST['fecha'];
+$hora = $_POST['hora'];
+$teatro = $_POST['teatro'];
+$sala = $_POST['sala'];
+$precio = $_POST['precio'];
+$total = $_POST['total'];
+
 function authenticate()
 {
     // Getting the access token from .env file (create your own function)
@@ -57,27 +70,27 @@ function createPaymentPreference()
 	
 	https://www.youtube.com/watch?v=-VD-l5BQsuE&t=1112s
     // Fill the data about the product(s) being pruchased
+		    global $IDEvento, $obra, $sector, $cantidad, $precio;
     $product1 = array(
-        "id" => "1234567890",
-        "title" => "Product 1 Title",
-        "description" => "Product 1 Description",
-        "currency_id" => "ARS",
-        "quantity" => 11,
-        "unit_price" => 10
+        // "id" => "1234567890",
+        // "title" => "Product 1 Title",
+        // "description" => "Product 1 Description",
+        // "currency_id" => "ARS",
+        // "quantity" => 11,
+        // "unit_price" => 10
+				"id" => $IDEvento,
+				"title" => "Entrada (s) para la obra: " . $obra,
+				"description" => "Sector: " . $sector,
+				"currency_id" => "ARS",
+				"quantity" => (int) $cantidad,
+				"unit_price" => (float) $precio
     );
 
-    $product2 = array(
-        "id" => "9012345678",
-        "title" => "Product 2 Title",
-        "description" => "Product 2 Description",
-        "currency_id" => "ARS",
-        "quantity" => 1,
-        "unit_price" => 10
-    );
+		error_log("entro aca mercadoPago.php 89" . PHP_EOL);
+		error_log(json_encode($product1));
 
     // Mount the array of products that will integrate the purchase amount
-    $items = array($product1, $product2);
-
+    $items = array($product1);
 
     $payer = array(
         "name" => "John",
@@ -100,7 +113,13 @@ function createPaymentPreference()
     } catch (MPApiException $error) {
         // Here you might return whatever your app needs.
         // We are returning null here as an example.
-				echo $error->getMessage();
+				error_log("entro aca mercadoPago.php 116" . PHP_EOL);
+				error_log($error->getMessage());
+				error_log("entro aca mercadoPago.php 118" . PHP_EOL);
+				error_log($error->getTraceAsString());
+				// string error
+				error_log(json_encode($error));
+
         return null;
     }
 }
@@ -108,13 +127,16 @@ function createPaymentPreference()
 // Authenticate the SDK
 authenticate();
 
+error_log("entro aca mercadoPago.php 130" . PHP_EOL);
 // Create the payment preference
 $preference = createPaymentPreference();
 
 if ($preference) {
+	error_log("entro aca mercadoPago.php 135" . PHP_EOL);
 		// Here you can do whatever you want with the preference object
 		// For example, you can redirect the user to the checkout page
 		// header('Location: ' . $preference->init_point);
+
 		error_log($preference->init_point);
 		header('Location: ' . $preference->init_point);
 } else {

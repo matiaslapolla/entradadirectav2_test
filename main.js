@@ -78,8 +78,13 @@ function generarEntrada(IDEvento,dni,sector,cantidad,usuario,ruta){
 }
 
 function handleMercadoPago(ticketData) {
-
-	window.location.href = `mercadoPago.php?IDEvento=${ticketData.IDEvento}&dni=${ticketData.dni}&sector=${ticketData.sector}&cantidad=${ticketData.cantidad}&usuario=${ticketData.usuario}`;
+	window.location.href = `
+		mercadoPago.php?
+		IDEvento=${ticketData.IDEvento}&
+		dni=${ticketData.dni}&
+		sector=${ticketData.sector}&
+		cantidad=${ticketData.cantidad}&
+		usuario=${ticketData.usuario}`;
 	
 }
 
