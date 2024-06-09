@@ -37,27 +37,23 @@ function authenticate()
 // Function that will return a request object to be sent to Mercado Pago API
 function createPreferenceRequest($items, $payer)
 {
-    $paymentMethods = [
-        "excluded_payment_methods" => [],
-        "installments" => 1,
-        "default_installments" => 1
-    ];
 
 		//url https://9772-190-19-173-44.ngrok-free
     $backUrls = array(
-				"success" => "http://localhost:8003/mercadoPago_pagar.php",
-				"failure" => "http://localhost:8003/mercadoPago_pagar.php",
-				"pending" => "http://localhost:8003/mercadoPago_pagar.php"
+				"success" => "https://e651-190-19-173-44.ngrok-free.app/mercadoPago_pagar_success.php",
+				"failure" => "https://e651-190-19-173-44.ngrok-free.app/mercadoPago_pagar_failure.php",
+				"pending" => "https://e651-190-19-173-44.ngrok-free.app/mercadoPago_pagar_pending.php	"
 		);
 
     $request = [
         "items" => $items,
-        "payer" => $payer,
-        "payment_methods" => $paymentMethods,
+        // "payer" => $payer,
+        // "payment_methods" => $paymentMethods,
         "back_urls" => $backUrls,
-        "statement_descriptor" => "NAME_DISPLAYED_IN_USER_BILLING",
-        "external_reference" => "1234567890",
-        "expires" => false,
+        // "statement_descriptor" => "NAME_DISPLAYED_IN_USER_BILLING",
+        // "external_reference" => "1234567890",
+        // "expires" => false,
+				// el auto return es solo cuando el pago se aprueba
         "auto_return" => 'approved',
     ];
 
@@ -68,16 +64,12 @@ function createPaymentPreference()
 {
 	//guide 
 	
-	https://www.youtube.com/watch?v=-VD-l5BQsuE&t=1112s
+		// https://www.youtube.com/watch?v=-VD-l5BQsuE&t=1112s
+		// https://www.youtube.com/watch?v=QqiDandkcBY&t=2191s
     // Fill the data about the product(s) being pruchased
-		    global $IDEvento, $obra, $sector, $cantidad, $precio;
+
+		global $IDEvento, $obra, $sector, $cantidad, $precio;
     $product1 = array(
-        // "id" => "1234567890",
-        // "title" => "Product 1 Title",
-        // "description" => "Product 1 Description",
-        // "currency_id" => "ARS",
-        // "quantity" => 11,
-        // "unit_price" => 10
 				"id" => $IDEvento,
 				"title" => "Entrada (s) para la obra: " . $obra,
 				"description" => "Sector: " . $sector,
@@ -95,7 +87,7 @@ function createPaymentPreference()
     $payer = array(
         "name" => "John",
         "surname" => "Doe",
-        "email" => "test@gmail.com"
+        "email" => "matias.lapolla.1@gmail.com"
     );
 
     // Create the request object to be sent to the API when the preference is created

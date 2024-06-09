@@ -1,4 +1,5 @@
 ﻿<?php
+
 if($_SERVER['DOCUMENT_ROOT'] == "/var/www/html"){
 function conexion(){
     $servidor = "localhost";
@@ -62,14 +63,29 @@ function conexion(){
   	return $conexion;
 	}
 
-  $conexion=conexion();
-	error_log("http host 66 " . $_SERVER['HTTP_HOST'] . PHP_EOL);
-
-	if ($_SERVER['HTTP_HOST'] == 'localhost:8003'){
-		define('__HOST__','http://localhost:8003');
-	}else{
-		define('__HOST__','https://www.entradadirecta.com.ar');
+	if (strpos($_SERVER['HTTP_HOST'], 'ngrok') !== false) {
+    define('__HOST__', 'https://e651-190-19-173-44.ngrok-free.app');
+	} elseif ($_SERVER['HTTP_HOST'] == 'localhost:8003') {
+			define('__HOST__', 'http://localhost:8003');
+	} else {
+			// Define a default host or handle other cases as needed
+			define('__HOST__', 'https://www.entradadirecta.com.ar');
 	}
+
+	// You can now use the __HOST__ constant in your application
+
+  $conexion=conexion();
+	error_log("http host 81 " . $_SERVER['HTTP_HOST'] . PHP_EOL);
+	error_log("http host 82 " . __HOST__ . PHP_EOL);
+	error_log("http host 83 " . strpos($_SERVER['HTTP_HOST'], 'ngrok') . PHP_EOL);
+
+	// if ($_SERVER['HTTP_HOST'] == 'localhost:8003'){
+	// 	define('__HOST__','http://localhost:8003');
+	// }
+	// if ($_SERVER['HTTP_HOST'])
+	// {
+	// 	define('__HOST__','https://www.entradadirecta.com.ar');
+	// }
 
 	// if ($_SERVER['HTTP_HOST'] == 'localhost'){
 	// }
