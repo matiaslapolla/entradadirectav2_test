@@ -69,12 +69,13 @@ function generarEntrada(IDEvento,dni,sector,cantidad,usuario,ruta){
 			cantidad: cantidad,
 			usuario: usuario,
 		}
-		handleMercadoPago(ticketData);
-    // var tickets=capaTickets.value;
-    // window.open(ruta+"/generarTicket.php?IDEvento="+IDEvento+"&sector="+sector+"&tickets="+tickets);
-    // location = ruta;
-    // location.reload();
-  }
+		// handleMercadoPago(ticketData);
+    var tickets=capaTickets.value;
+    window.open(ruta+"/generarTicket.php?IDEvento="+IDEvento+"&sector="+sector+"&tickets="+tickets);
+    location = ruta;
+    location.reload();
+	}
+	
 }
 
 function handleMercadoPago(ticketData) {
@@ -85,7 +86,6 @@ function handleMercadoPago(ticketData) {
 		sector=${ticketData.sector}&
 		cantidad=${ticketData.cantidad}&
 		usuario=${ticketData.usuario}`;
-	
 }
 
 async function createOrder(ticketData) {
@@ -113,7 +113,7 @@ async function createOrder(ticketData) {
 			failure: `${HOST}/failure`,
 			pending: `${HOST}/pending`,
 		},
-		notification_url: "https://8d35-190-19-173-44.ngrok-free.app/webhook",
+		notification_url: "https://3510-190-19-173-44.ngrok-free.app/webhook",
 	});
 
 	console.log(result);

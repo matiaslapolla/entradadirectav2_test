@@ -53,7 +53,15 @@ $level='M';
 $padding=1;
 $contenido=$obra." - ".$fechaTicket." - ".$numTicket;
 
-QRcode::png($contenido,$filename,$level,$tamanio,$padding);
+error_log(json_encode([
+	'filename' => $filename,
+	'contenido' => $contenido,
+	'level' => $level,
+	'tamanio' => $tamanio,
+	'padding' => $padding
+]));
+
+// QRcode::png($contenido,$filename,$level,$tamanio,$padding);
 
 
 
@@ -95,3 +103,22 @@ $dompdf->stream($numTicket.".pdf",array("Attachment" => true ));
 
 
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Generar Ticket</title>
+</head>
+<body>
+	<div style="text-align:center;width:30%;margin:0;padding:0;">
+		<div><img src="images/planetaEntradaT.png" style="margin:auto;width:130px;opacity:0.5;"></div>
+		<div style="font-size:30px;margin-top:5px;font-family:Arial;"><b><?php echo $obra; ?></b></div>
+		<div style="font-size:20px;margin-top:10px;color:#555;font-family:Arial;">Teatro <?php echo $teatro; ?></div>
+		<div style="font-size:13px;margin-top:5px;color:#555;font-family:Arial;">Sala <?php echo $sala; ?> - Sector  <?php echo $sector; ?></div>
+		<div style="font-size:19px;margin-top:8px;font-family:Arial;"><?php echo $fechaTicket; ?></div>
+		<div style="font-size:17px;margin-top:12px;font-family:Arial;">Cantidad: <?php echo $cantidad; ?></div>
+		<div style="font-size:14px;margin-top:8px;color:#555;font-family:Arial;">Cod. <?php echo $numTicket; ?></div>
+		<div style="font-size:16px;margin-top:8px;font-family:Arial;">Total valor: <?php echo $precio; ?></div>
+		<div style="margin-top:1px;">&nbsp;</div>
+		<div><img src="tmp/codigoqr.png" style="margin:auto;"></div>
+	</div>

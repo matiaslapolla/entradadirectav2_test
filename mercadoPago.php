@@ -17,7 +17,13 @@ $sQuery="SELECT Fecha, Hora, Obra, Teatro
          WHERE IDEvento = '$IDEvento'";
 $res = $conexion->query($sQuery);
 
-# url model http://localhost:8003/mercadoPago.php?IDEvento=61&dni=12345654&sector=3&cantidad=1&usuario=7
+# url model 
+# http://localhost:8003/mercadoPago.php?
+#	IDEvento=61&
+# dni=12345654&
+# sector=3&
+# cantidad=1&
+# usuario=7
 
 $ticketData = [];
 

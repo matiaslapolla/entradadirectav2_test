@@ -64,7 +64,7 @@ function conexion(){
 	}
 
 	if (strpos($_SERVER['HTTP_HOST'], 'ngrok') !== false) {
-    define('__HOST__', 'https://e651-190-19-173-44.ngrok-free.app');
+    define('__HOST__', 'https://3510-190-19-173-44.ngrok-free.app');
 	} elseif ($_SERVER['HTTP_HOST'] == 'localhost:8003') {
 			define('__HOST__', 'http://localhost:8003');
 	} else {
@@ -281,13 +281,8 @@ function formatNumTicket($num){
 
 	error_log("263 formatNumTicket num " . $num . PHP_EOL);
 
-  $len=strlen($num);
-  $hasta=7-$len;
-  for ($j=0; $j < $hasta; $j++){
-    $num="0".$num;
-  }
-  $numTicket="T".$num;
-  return $numTicket;
+	$numTicket = "T" . str_pad($num, 7, "0", STR_PAD_LEFT);
+	return $numTicket;
 }
 
 /* onclick=\"generarEntrada('".$r->IDEvento."',selectCantidad$r->IDEvento.value, selectSector$r->IDEvento.value.'".$IDUsuario."','".__HOST__."')\" */ 

@@ -40,9 +40,9 @@ function createPreferenceRequest($items, $payer)
 
 		//url https://9772-190-19-173-44.ngrok-free
     $backUrls = array(
-				"success" => "https://e651-190-19-173-44.ngrok-free.app/mercadoPago_pagar_success.php",
-				"failure" => "https://e651-190-19-173-44.ngrok-free.app/mercadoPago_pagar_failure.php",
-				"pending" => "https://e651-190-19-173-44.ngrok-free.app/mercadoPago_pagar_pending.php	"
+				"success" => "https://3510-190-19-173-44.ngrok-free.app/mercadoPago_pagar_success.php",
+				"failure" => "https://3510-190-19-173-44.ngrok-free.app/mercadoPago_pagar_failure.php",
+				"pending" => "https://3510-190-19-173-44.ngrok-free.app/mercadoPago_pagar_pending.php	"
 		);
 
     $request = [
@@ -51,7 +51,9 @@ function createPreferenceRequest($items, $payer)
         // "payment_methods" => $paymentMethods,
         "back_urls" => $backUrls,
         // "statement_descriptor" => "NAME_DISPLAYED_IN_USER_BILLING",
-        // "external_reference" => "1234567890",
+        "external_reference" => [
+						"IDEvento" => $IDEvento,
+				],
         // "expires" => false,
 				// el auto return es solo cuando el pago se aprueba
         "auto_return" => 'approved',
