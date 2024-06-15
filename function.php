@@ -64,7 +64,7 @@ function conexion(){
 	}
 
 	if (strpos($_SERVER['HTTP_HOST'], 'ngrok') !== false) {
-    define('__HOST__', 'https://3510-190-19-173-44.ngrok-free.app');
+    define('__HOST__', 'https://5828-190-19-173-44.ngrok-free.app');
 	} elseif ($_SERVER['HTTP_HOST'] == 'localhost:8003') {
 			define('__HOST__', 'http://localhost:8003');
 	} else {
@@ -274,6 +274,8 @@ $ary_mes=array("","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agos
   $anio=date("Y", strtotime($fecha));
   $hora=substr($fecha,11,5);
   $fechaVer=$ary_dia[$diaSemana].", ".$dia." de ".$ary_mes[$mes]. " de ".$anio." ".$hora." hs";
+
+	error_log("formatFechaHoraDetalle 263 " . $fechaVer . PHP_EOL);
   return $fechaVer;
 }
 
