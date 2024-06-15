@@ -36,7 +36,6 @@ $fechaTicket=formatFechaHoraDetalle($fecha." ".$hora);
 $precio=$precio*$cantidad;
 $precio=formatPrecio($precio);
 
-
 require_once('dompdf/autoload.inc.php');
 use Dompdf\Dompdf;
 
@@ -61,22 +60,55 @@ error_log(json_encode([
 	'padding' => $padding
 ]));
 
-// QRcode::png($contenido,$filename,$level,$tamanio,$padding);
+// TODO: comentar/descomentar esto, genera el QR preguntar si esto es necesario, crashea la app en macOs
+QRcode::png($contenido,$filename,$level,$tamanio,$padding);
 
 
 
-$html="<div style='text-align:center;width:30%;margin:0;padding:0;'>";
-$html.="<div><img src='".__HOST__."/images/planetaEntradaT.png' style='margin:auto;width:130px;opacity:0.5;'></div>";
-$html.="<div style='font-size:30px;margin-top:5px;font-family:Arial;'><b>".$obra."</b></div>";
-$html.="<div style='font-size:20px;margin-top:10px;color:#555;font-family:Arial;'>Teatro ".$teatro."</div>";
-$html.="<div style='font-size:13px;margin-top:5px;color:#555;font-family:Arial;'>Sala ".$sala." - Sector  ".$sector."</div>";
-$html.="<div style='font-size:19px;margin-top:8px;font-family:Arial;'>".$fechaTicket."</div>";
-$html.="<div style='font-size:17px;margin-top:12px;font-family:Arial;'>Cantidad: ".$cantidad."</div>";
-$html.="<div style='font-size:14px;margin-top:8px;color:#555;font-family:Arial;'>Cod. ".$numTicket."</div>";
-$html.="<div style='font-size:16px;margin-top:8px;font-family:Arial;'>Total valor: ".$precio."</div>";
-$html.="<div style='margin-top:1px;'>&nbsp;</div>";
-$html.="<div><img src='".__HOST__."/tmp/codigoqr.png' style='margin:auto;'></div>";
-$html.="</div>";
+// TODO: preguntar si esto es necesario, practicamente lo mismo que el de abajo
+// $html="<div style='text-align:center;width:30%;margin:0;padding:0;'>";
+// $html.="<div><img src='".__HOST__."/images/planetaEntradaT.png' style='margin:auto;width:130px;opacity:0.5;'></div>";
+// $html.="<div style='font-size:30px;margin-top:5px;font-family:Arial;'><b>".$obra."</b></div>";
+// $html.="<div style='font-size:20px;margin-top:10px;color:#555;font-family:Arial;'>Teatro ".$teatro."</div>";
+// $html.="<div style='font-size:13px;margin-top:5px;color:#555;font-family:Arial;'>Sala ".$sala." - Sector  ".$sector."</div>";
+// $html.="<div style='font-size:19px;margin-top:8px;font-family:Arial;'>".$fechaTicket."</div>";
+// $html.="<div style='font-size:17px;margin-top:12px;font-family:Arial;'>Cantidad: ".$cantidad."</div>";
+// $html.="<div style='font-size:14px;margin-top:8px;color:#555;font-family:Arial;'>Cod. ".$numTicket."</div>";
+// $html.="<div style='font-size:16px;margin-top:8px;font-family:Arial;'>Total valor: ".$precio."</div>";
+// $html.="<div style='margin-top:1px;'>&nbsp;</div>";
+// $html.="<div><img src='".__HOST__."/tmp/codigoqr.png' style='margin:auto;'></div>";
+// $html.="</div>";
+
+
+	$contenido_pdf='
+	<div style="text-align:center;width:30%;margin:0;padding:0;">
+		<div><img src="images/planetaEntradaT.png" style="margin:auto;width:130px;opacity:0.5;"></div>
+		<div style="font-size:30px;margin-top:5px;font-family:Arial;"><b><?php echo $obra; ?></b></div>
+		<div style="font-size:20px;margin-top:10px;color:#555;font-family:Arial;">Teatro <?php echo $teatro; ?></div>
+		<div style="font-size:13px;margin-top:5px;color:#555;font-family:Arial;">Sala <?php echo $sala; ?> - Sector  <?php echo $sector; ?></div>
+		<div style="font-size:19px;margin-top:8px;font-family:Arial;"><?php echo $fechaTicket; ?></div>
+		<div style="font-size:17px;margin-top:12px;font-family:Arial;">Cantidad: <?php echo $cantidad; ?></div>
+		<div style="font-size:14px;margin-top:8px;color:#555;font-family:Arial;">Cod. <?php echo $numTicket; ?></div>
+		<div style="font-size:16px;margin-top:8px;font-family:Arial;">Total valor: <?php echo $precio; ?></div>
+		<div style="margin-top:1px;">&nbsp;</div>
+		<div><img src="tmp/codigoqr.png" style="margin:auto;"></div>
+	</div>
+';
+
+	$dompdf = new Dompdf();
+
+	$options=$dompdf->getOptions();
+	$options->set(array('isRemoteEnabled' => true));
+	$dompdf->setOptions($options); 
+
+	$dompdf->loadHtml($contenido_pdf);
+
+	$dompdf->render();
+	$dompdf->setPaper("leter");
+	$dompdf->setPaper("A7","landscape");
+	$dompdf->stream($numTicket.".pdf",array("Attachment" => true ));
+
+	
 
 
 // LOG
@@ -88,18 +120,19 @@ fwrite($fp,$obra." ".$teatro." ".$sector." ".$fechaTicket." ".$cantidad." ".$num
 
 
 
-$dompdf = new Dompdf();
+// TODO: Aca se el PDF preguntar si esto es necesario o avanzar con el boton imprimir
+// $dompdf = new Dompdf();
 
-$options=$dompdf->getOptions();
-$options->set(array('isRemoteEnabled' => true));
-$dompdf->setOptions($options); 
+// $options=$dompdf->getOptions();
+// $options->set(array('isRemoteEnabled' => true));
+// $dompdf->setOptions($options); 
 
-$dompdf->loadHtml($html);
+// $dompdf->loadHtml($html);
 
-$dompdf->render();
-$dompdf->setPaper("leter");
-$dompdf->setPaper("A7","landscape");
-$dompdf->stream($numTicket.".pdf",array("Attachment" => true ));
+// $dompdf->render();
+// $dompdf->setPaper("leter");
+// $dompdf->setPaper("A7","landscape");
+// $dompdf->stream($numTicket.".pdf",array("Attachment" => true ));
 
 
 ?>
