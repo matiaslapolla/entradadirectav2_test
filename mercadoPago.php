@@ -50,46 +50,6 @@ while($r = $_res->fetch_object()){
 
 error_log("entro aca mercadoPago.php 43" . PHP_EOL);
 
-// function processPayment() {
-// 	 try {
-
-		
-//         $client = new PaymentClient();
-
-// 				$payment = new Payment();
-
-// 				$itemPaid = [
-// 					'id' => $IDEvento,
-// 					'title' => $ticketData['obra'],
-// 					'quantity' => $cantidad,
-// 					'unit_price' => $posData['precio'] * $cantidad,
-// 					'currency_id' => 'ARS'
-// 				];
-
-// 				$payment->items = [$itemPaid];
-
-//         validate_payment_result($payment);
-
-//         $response_fields = array(
-//             'id' => $payment->id,
-//             'status' => $payment->status,
-//             'detail' => $payment->status_detail
-//         );
-
-//         $response_body = json_encode($response_fields);
-//         $response->getBody()->write($response_body);
-				
-//         return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
-//     } catch (Exception $exception) {
-//         $response_fields = array('error_message' => $exception->getMessage());
-
-//         $response_body = json_encode($response_fields);
-//         $response->getBody()->write($response_body);
-
-//         return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
-//     }
-// }
-
 ?>
 
 <div style='margin-top:160px;'></div>
@@ -126,6 +86,7 @@ error_log("entro aca mercadoPago.php 43" . PHP_EOL);
 				<div style='font-size:20px;font-weight:400; font-family:sans-serif'>Hora: <?php echo $ticketData['hora']; ?></div>
 				<div style='font-size:20px;font-weight:400; font-family:sans-serif'>Teatro: <?php echo $ticketData['teatro']; ?></div>
 				<div style='font-size:20px;font-weight:400; font-family:sans-serif'>Sector: <?php echo $posData['sector']; ?></div>
+				<div style='font-size:20px;font-weight:400; font-family:sans-serif'>Sector: <?php echo $sector; ?></div>
 				<div style='font-size:20px;font-weight:400; font-family:sans-serif'>Sala: <?php echo $posData['sala']; ?></div>
 				<div style='font-size:20px;font-weight:400; font-family:sans-serif'>Precio unitario: <?php echo $posData['precio']; ?></div>
 				<div style='font-size:20px;font-weight:400; font-family:sans-serif'>Cantidad: <?php echo $cantidad; ?></div>
@@ -142,7 +103,7 @@ error_log("entro aca mercadoPago.php 43" . PHP_EOL);
 					<input type="hidden" name="fecha" value="<?php echo $ticketData['fecha']; ?>">
 					<input type="hidden" name="hora" value="<?php echo $ticketData['hora']; ?>">
 					<input type="hidden" name="teatro" value="<?php echo $ticketData['teatro']; ?>">
-					<input type="hidden" name="sector" value="<?php echo $posData['sector']; ?>">
+					<input type="hidden" name="sector" value="<?php echo $sector; ?>">
 					<input type="hidden" name="sala" value="<?php echo $posData['sala']; ?>">
 					<input type="hidden" name="precio" value="<?php echo $posData['precio']; ?>">
 					<input type="hidden" name="cantidad" value="<?php echo $cantidad; ?>">

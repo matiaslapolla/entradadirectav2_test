@@ -1,7 +1,7 @@
 <?php
-// Get parameters from the URL
 
 include('function.php');
+
 $id_pago = $_GET['payment_id'];
 $estado = $_GET['status'];
 $referencia = $_GET['external_reference'];
@@ -15,37 +15,53 @@ $collection_status = $_GET['collection_status'];
 $payment_type = $_GET['payment_type'];
 $merchant_order_id = $_GET['merchant_order_id'];
 
-// table model
-// id SERIAL PRIMARY KEY,
-// IDEvento INTEGER REFERENCES Eventos(IDEvento),
-// IDSectorEvento INTEGER REFERENCES SectoresEvento(IDSectorEvento),
-// FechaVenta DATE,
-// CantidadEntradas INTEGER,
-// PrecioTotal DECIMAL(10,2)
+$id_evento = json_decode($referencia)->IDEvento;
+$usuario = json_decode($referencia)->usuario;
+$total_venta = json_decode($referencia)->total;
+$sector = json_decode($referencia)->IDSector;
+$dni = json_decode($referencia)->dni;
 
+$butacaQuery = "SELECT IDButaca FROM Butacas WHERE IDEvento = $id_evento AND IDSector = $sector AND ESTADO = 1 AND NroDocumento = $dni;";
+$butacaResult = $conexion->query($butacaQuery);
 
-#url form
-# https://1127-190-230-204-110.ngrok-free.app/mercadoPago_pagar_success.php?
-#	collection_id=1323840585&
-#	collection_status=approved&
-#	payment_id=1323840585&
-#	status=approved&
-#	external_reference=null&
-#	payment_type=credit_card&
-#	merchant_order_id=19570473368&
-#	preference_id=216147253-b91e4a11-8848-4fc2-af94-9d19dd52a9a7&
-#	site_id=MLA&
-#	processing_mode=aggregator&
-#	merchant_account_id=null
+$IDButacas = [];
 
-// Process the data (e.g., update order status in your database)
-if ($estado == 'approved') {
-	$query = [];
+foreach ($butacaResult as $butaca) {
+	$IDButacas[] = $butaca['IDButaca'];
+}
 
-	
+try {
+    $IDButacas = json_encode($IDButacas);
 
-} else {
+    $ventaQuery = "INSERT INTO Ventas (IDButaca, IDPago, IDVendedor, TotalVenta) VALUES (?, ?, ?, ?)";
+    $stmt = $conexion->prepare($ventaQuery);
 
+    if ($stmt === false) {
+        throw new Exception('Failed to prepare statement: ' . $conexion->error);
+    }
+
+    if (!$stmt->bind_param('ssss', $IDButacas, $id_pago, $usuario, $total_venta)) {
+        throw new Exception('Failed to bind parameters: ' . $stmt->error);
+    }
+
+    if (!$stmt->execute()) {
+        throw new Exception('Failed to execute statement: ' . $stmt->error);
+    }
+
+    $IDVenta = $conexion->insert_id;
+
+		foreach ($butacaResult as $butaca) {
+			$butacaQuery = "UPDATE Butacas SET IDVenta = $IDVenta WHERE IDButaca = " . $butaca['IDButaca'] . ";";
+			$conexion->query($butacaQuery);
+		}
+
+		$stmt->close();
+		$conexion->close();
+		error_log('Venta registrada con éxito');
+
+} catch (Exception $e) {
+    echo 'Error: ' . $e->getMessage() . PHP_EOL;
+    error_log('Error in mercadoPago_pagar_success.php: ' . $e->getMessage());
 }
 
 ?>
@@ -53,7 +69,7 @@ if ($estado == 'approved') {
 <!DOCTYPE html>
 <html>
 <head>
-		<title>Payment Status</title>
+		<title>Datos del Pago</title>
 </head>
 <!DOCTYPE html>
 <html>
@@ -83,19 +99,22 @@ if ($estado == 'approved') {
 </head>
 <body>
 	<div class="container">
-		<h1>Payment Status</h1>
-		<p>Payment ID: <?php echo $id_pago; ?></p>
-		<p>Status: <?php echo $estado; ?></p>
-		<p>External Reference: <?php echo $referencia; ?></p>
-		<p>Merchant Order ID: <?php echo $id_orden_pago; ?></p>
-		<p>Preference ID: <?php echo $preference_id; ?></p>
-		<p>Site ID: <?php echo $site_id; ?></p>
-		<p>Processing Mode: <?php echo $processing_mode; ?></p>
-		<p>Merchant Account ID: <?php echo $merchant_account_id; ?></p>
-		<p>Collection ID: <?php echo $collection_id; ?></p>
-		<p>Collection Status: <?php echo $collection_status; ?></p>
-		<p>Payment Type: <?php echo $payment_type; ?></p>
-		<p>Merchant Order ID: <?php echo $merchant_order_id; ?></p>
+		<h1>Resumen del pago</h1>
+		<p>Id del pago: <?php echo $id_pago; ?></p>
+		<p>Estado del pago: <?php echo $estado; ?></p>
+		<!-- <p>External Reference: <?php echo $referencia; ?></p> -->
+		<!-- <p>Merchant Order ID: <?php echo $id_orden_pago; ?></p> -->
+		<!-- <p>Preference ID: <?php echo $preference_id; ?></p> -->
+		<!-- <p>Site ID: <?php echo $site_id; ?></p> -->
+		<!-- <p>Processing Mode: <?php echo $processing_mode; ?></p> -->
+		<!-- <p>Merchant Account ID: <?php echo $merchant_account_id; ?></p> -->
+		<!-- <p>Collection ID: <?php echo $collection_id; ?></p> -->
+		<!-- <p>Collection Status: <?php echo $collection_status; ?></p> -->
+		<!-- <p>Payment Type: <?php echo $payment_type; ?></p> -->
+		<!-- <p>Merchant Order ID: <?php echo $merchant_order_id; ?></p> -->
+		<p>Id del evento : <?php echo $id_evento; ?></p>
+		<p>Butacas actualizadas : <?php echo json_encode($IDButacas); ?></p>
+		<p>Id de la venta : <?php echo $IDVenta; ?></p>
 	</div>
 </body>
 </html>
